@@ -1,0 +1,34 @@
+{
+  "title": "Portsmouth Water",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect Portsmouth Water",
+        "description": "Sign in to your Portsmouth Water account. Only a refresh token is stored; your password is discarded. Usage updates every six hours.",
+        "data": {
+          "email": "Email address",
+          "password": "Password"
+        }
+      },
+      "account": {
+        "title": "Choose your account",
+        "data": {
+          "account": "Account"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Unable to sign in. Check your login details.",
+      "cannot_connect": "Unable to connect to Portsmouth Water."
+    },
+    "abort": {
+      "already_configured": "This account is already configured.",
+      "no_accounts": "No accounts found.",
+      "no_refresh_token": "The portal did not return a refresh token.",
+      "no_smart_meter": "No active smart water meter found.",
+      "cannot_connect": "Unable to connect.",
+      "reauth_successful": "Sign-in renewed.",
+      "wrong_account": "Please sign in to the original water account."
+    }
+  }
+}

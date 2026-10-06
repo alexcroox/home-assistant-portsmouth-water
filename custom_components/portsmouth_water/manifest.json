@@ -1,0 +1,16 @@
+{
+  "domain": "portsmouth_water",
+  "name": "Portsmouth Water",
+  "version": "0.1.2",
+  "config_flow": true,
+  "documentation": "https://github.com/alexcroox/home-assistant-portsmouth-water",
+  "iot_class": "cloud_polling",
+  "dependencies": [
+    "recorder"
+  ],
+  "requirements": [],
+  "codeowners": [
+    "@alexcroox"
+  ],
+  "issue_tracker": "https://github.com/alexcroox/home-assistant-portsmouth-water/issues"
+}
