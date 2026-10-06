@@ -9,7 +9,7 @@ from homeassistant.helpers.storage import Store
 from homeassistant.util import slugify
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from .api import Client, AuthError, ApiError
-from .const import DOMAIN, PLATFORMS
+from .const import DOMAIN, PLATFORMS, CONF_UNIT, DEFAULT_UNIT
 from .data import normalize, cumulative
 
 _LOGGER=logging.getLogger(__name__)
@@ -20,6 +20,7 @@ class Coordinator(DataUpdateCoordinator):
         self.api=Client(async_get_clientsession(hass),entry.data["refresh_token"])
         self.store=Store(hass,1,f"{DOMAIN}.{entry.entry_id}.readings")
         self.history={}
+        self.unit=entry.options.get(CONF_UNIT, DEFAULT_UNIT)
     async def _async_update_data(self):
         try:
             await self.api.login()
@@ -33,16 +34,13 @@ class Coordinator(DataUpdateCoordinator):
                 daily=normalize(await self.api.readings(self.entry.data["account"],meter,"DAY_INTERVAL"))
                 history=self.history.setdefault(serial,{})
                 history.update(daily)
-                rows=cumulative(history)
-                for row in rows:
-                    row["state"] *= 1000
-                    row["sum"] *= 1000
+                rows=cumulative(history, self.unit)
                 statistic_id=f"{DOMAIN}:{slugify(self.entry.data['account'] + '_' + serial + '_usage')}"
                 if rows:
                     # Canonical history is kept in cubic metres; rewrite all retained
-                    # statistics in litres after updating their metadata.
-                    async_update_statistics_metadata(self.hass, statistic_id, new_unit_class="volume", new_unit_of_measurement="L")
-                    async_add_external_statistics(self.hass,{"mean_type":StatisticMeanType.NONE,"has_sum":True,"name":f"Portsmouth Water {serial} usage","source":DOMAIN,"statistic_id":statistic_id,"unit_class":"volume","unit_of_measurement":"L"},rows)
+                    # statistics in the selected unit after updating their metadata.
+                    async_update_statistics_metadata(self.hass, statistic_id, new_unit_class="volume", new_unit_of_measurement=self.unit)
+                    async_add_external_statistics(self.hass,{"mean_type":StatisticMeanType.NONE,"has_sum":True,"name":f"Portsmouth Water {serial} usage","source":DOMAIN,"statistic_id":statistic_id,"unit_class":"volume","unit_of_measurement":self.unit},rows)
                 result[serial]={"meter":meter,"daily":daily,"statistic_id":statistic_id}
             await self.store.async_save(self.history)
             return result

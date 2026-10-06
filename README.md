@@ -4,8 +4,8 @@ An unofficial Home Assistant custom integration for Portsmouth Water smart meter
 
 ## Features
 
-- Latest complete daily water usage in **litres** and the date of that reading.
-- Daily consumption history for Home Assistant's Energy → Water dashboard, also in litres.
+- Latest complete daily water usage in **litres or cubic metres** and the date of that reading.
+- Daily consumption history for Home Assistant's Energy → Water dashboard, in the selected unit.
 - Potential-leak indicator supplied by Portsmouth Water for the latest daily reading.
 - Automatic updates every six hours.
 - Sign-in through Home Assistant; the integration stores a renewable token and discards the password.
@@ -27,7 +27,7 @@ This integration can be installed as a **custom repository** in HACS. It is not 
 5. Find **Portsmouth Water** in HACS, open it and click **Download**. Select the latest release.
 6. Run Home Assistant's configuration check, then restart Home Assistant.
 7. Open **Settings → Devices & services → Add integration → Portsmouth Water** and sign in with your Portsmouth Water account.
-8. Follow **Show daily usage in litres** below to configure the water dashboard.
+8. Follow **Show daily usage** below to configure the water dashboard.
 
 These steps follow the [official HACS custom repository instructions](https://www.hacs.dev/docs/faq/custom_repositories/).
 
@@ -55,7 +55,13 @@ These steps follow the [official HACS custom repository instructions](https://ww
 
 No YAML configuration is required. If the integration does not appear, refresh the browser after restarting and check Home Assistant's logs for `portsmouth_water` errors.
 
-## Show daily usage in litres
+## Choose litres or cubic metres
+
+Litres (L) are the default. To change the unit, go to **Settings → Devices & services → Portsmouth Water → Configure** (the options button), choose **Litres (L)** or **Cubic metres (m³)**, and submit. The integration reloads automatically and rebuilds its retained consumption history in the selected unit. Refresh the Energy dashboard if it still shows the previous unit.
+
+The same imported statistic and entity IDs are retained, so the Water consumption source does not need to be added again. If you have separately overridden the sensor's display unit in Home Assistant, that override takes precedence; change it in the sensor settings as well.
+
+## Show daily usage
 
 1. Open the Energy dashboard's configuration and find **Water consumption**.
 2. Add the imported statistic named **Portsmouth Water <meter number> usage**.

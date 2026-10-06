@@ -27,7 +27,13 @@ def normalize(nodes, hourly=False, now=None):
         output[key]={"start":start.isoformat(),"end":end.isoformat(),"value":str(value),"leak":any(e["label"]=="LEAK" and e["value"]=="true" for e in (node.get("metaData") or {}).get("extras") or [])}
     return output
 
-def cumulative(history):
+def usage_value(value, unit="L"):
+    """Convert canonical cubic metres to the configured volume unit."""
+    if unit not in {"L", "m³"}:
+        raise ValueError("Unsupported display unit")
+    return float(Decimal(str(value)) * (1000 if unit == "L" else 1))
+
+def cumulative(history, unit="m³"):
     total=Decimal(0)
     result=[]
     if history:
@@ -36,5 +42,5 @@ def cumulative(history):
     for key in sorted(history,key=int):
         row=history[key]
         total+=Decimal(row["value"])
-        result.append({"start":datetime.fromisoformat(row["end"])-timedelta(hours=1),"state":float(row["value"]),"sum":float(total)})
+        result.append({"start":datetime.fromisoformat(row["end"])-timedelta(hours=1),"state":usage_value(row["value"], unit),"sum":usage_value(total, unit)})
     return result

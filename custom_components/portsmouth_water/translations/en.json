@@ -30,5 +30,19 @@
       "reauth_successful": "Sign-in renewed.",
       "wrong_account": "Please sign in to the original water account."
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Water usage units",
+        "description": "Choose the unit for daily usage and water dashboard history. Existing readings are converted automatically.",
+        "data": {
+          "unit": "Volume unit"
+        }
+      }
+    },
+    "error": {
+      "invalid_unit": "Choose litres or cubic metres."
+    }
   }
 }
