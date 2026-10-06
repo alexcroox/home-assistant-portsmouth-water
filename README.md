@@ -16,7 +16,24 @@ An unofficial Home Assistant custom integration for Portsmouth Water smart meter
 - Home Assistant with the Recorder integration enabled. Version 0.1.2 was tested on Home Assistant 2026.9.2; older versions have not been verified.
 - Internet access to `api.pwl.kraken.tech`.
 
-## Installation
+## Installation with HACS (recommended)
+
+This integration can be installed as a **custom repository** in HACS. It is not yet included in the default HACS catalogue. You need [HACS installed and configured](https://www.hacs.dev/docs/use/) first.
+
+1. Open **HACS** in Home Assistant.
+2. Open the **⋮** menu in the top right and select **Custom repositories**.
+3. Enter `https://github.com/alexcroox/home-assistant-portsmouth-water` as the repository URL.
+4. Choose **Integration** as the type, then click **Add**.
+5. Find **Portsmouth Water** in HACS, open it and click **Download**. Select the latest release.
+6. Run Home Assistant's configuration check, then restart Home Assistant.
+7. Open **Settings → Devices & services → Add integration → Portsmouth Water** and sign in with your Portsmouth Water account.
+8. Follow **Show daily usage in litres** below to configure the water dashboard.
+
+If you already installed this integration manually, back up Home Assistant, then download it through HACS into the same `custom_components/portsmouth_water` directory. Keep the existing Portsmouth Water entry in Devices & services; you do not need to add it again. After restarting, verify the existing entities and water dashboard. HACS then provides downloads and update notifications for published releases.
+
+These steps follow the [official HACS custom repository instructions](https://www.hacs.dev/docs/faq/custom_repositories/).
+
+## Manual installation
 
 1. Download this repository using **Code → Download ZIP**, then extract it.
 2. Locate your Home Assistant configuration directory: the directory containing `configuration.yaml` (usually `/config` on Home Assistant OS).
@@ -66,7 +83,7 @@ If authentication expires, Home Assistant will ask you to sign in again. Do not 
 
 ## Updating and removing
 
-To update, back up Home Assistant, replace `custom_components/portsmouth_water` with the new version, run the configuration check and restart.
+To update a HACS installation, back up Home Assistant, download the available update through HACS, run the configuration check and restart. For a manual installation, replace `custom_components/portsmouth_water` with the new version before checking and restarting.
 
 To remove it, delete its entry from **Settings → Devices & services**, remove the Water consumption source from your Energy settings, and then remove the `custom_components/portsmouth_water` directory and restart. Historical Recorder statistics may remain until removed separately through Home Assistant.
 
