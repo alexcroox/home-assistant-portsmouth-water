@@ -29,8 +29,6 @@ This integration can be installed as a **custom repository** in HACS. It is not 
 7. Open **Settings → Devices & services → Add integration → Portsmouth Water** and sign in with your Portsmouth Water account.
 8. Follow **Show daily usage in litres** below to configure the water dashboard.
 
-If you already installed this integration manually, back up Home Assistant, then download it through HACS into the same `custom_components/portsmouth_water` directory. Keep the existing Portsmouth Water entry in Devices & services; you do not need to add it again. After restarting, verify the existing entities and water dashboard. HACS then provides downloads and update notifications for published releases.
-
 These steps follow the [official HACS custom repository instructions](https://www.hacs.dev/docs/faq/custom_repositories/).
 
 ## Manual installation
