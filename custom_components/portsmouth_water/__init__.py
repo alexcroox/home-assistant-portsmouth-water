@@ -17,7 +17,7 @@ class Coordinator(DataUpdateCoordinator):
     def __init__(self,hass,entry):
         super().__init__(hass,_LOGGER,name="Portsmouth Water",update_interval=timedelta(hours=6),config_entry=entry)
         self.entry=entry
-        self.api=Client(async_get_clientsession(hass),entry.data["refresh_token"])
+        self.api=Client(async_get_clientsession(hass),entry.data.get("refresh_token"),email=entry.data.get("email"),password=entry.data.get("password"))
         self.store=Store(hass,1,f"{DOMAIN}.{entry.entry_id}.readings")
         self.history={}
         self.unit=entry.options.get(CONF_UNIT, DEFAULT_UNIT)

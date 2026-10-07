@@ -4,7 +4,7 @@
     "step": {
       "user": {
         "title": "Connect Portsmouth Water",
-        "description": "Sign in to your Portsmouth Water account. Only a refresh token is stored; your password is discarded. Usage updates every six hours.",
+        "description": "Sign in to your Portsmouth Water account. Your email and password are saved in Home Assistant so it can sign in automatically when the supplier session expires. Usage updates every six hours. Protect your Home Assistant configuration and backups.",
         "data": {
           "email": "Email address",
           "password": "Password"

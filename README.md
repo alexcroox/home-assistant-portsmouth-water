@@ -8,7 +8,7 @@ An unofficial Home Assistant custom integration for Portsmouth Water smart meter
 - Daily consumption history for Home Assistant's Energy → Water dashboard, in the selected unit.
 - Potential-leak indicator supplied by Portsmouth Water for the latest daily reading.
 - Automatic updates every six hours.
-- Sign-in through Home Assistant; the integration stores a renewable token and discards the password.
+- Sign-in through Home Assistant; the integration automatically signs in again when the supplier session expires.
 
 ## Requirements
 
@@ -81,9 +81,9 @@ The potential-leak indicator reflects the supplier's flag on the latest complete
 
 ## Authentication and privacy
 
-The password is used for sign-in and is not saved by the integration. Home Assistant stores the account email, account number and refresh token in its configuration entry, and stores imported consumption records locally. Treat Home Assistant's configuration and backups as private.
+Portsmouth Water currently issues refresh tokens with a fixed lifetime of approximately 30 minutes. Refreshing a token does not extend that lifetime. To keep working across updates and restarts, this integration saves your email, password, account number and refresh token in Home Assistant's configuration entry and signs in automatically when needed. Credentials are stored in Home Assistant's private configuration, not encrypted separately by this integration. Imported consumption records are stored locally. Protect access to Home Assistant's configuration and backups.
 
-If authentication expires, Home Assistant will ask you to sign in again. Do not include credentials, tokens, account numbers or unredacted logs when reporting an issue.
+Temporary supplier/network failures are retried by Home Assistant without asking for your password. If saved credentials are rejected, Home Assistant will ask you to sign in again. Users upgrading from a token-only version must sign in once to save credentials for automatic sign-in. Do not include credentials, tokens, account numbers or unredacted logs when reporting an issue.
 
 ## Updating and removing
 

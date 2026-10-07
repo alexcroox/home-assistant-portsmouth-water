@@ -1,4 +1,4 @@
-"""Sign in once; save a refresh token, never the password."""
+"""Sign in once and retain credentials for automatic session recovery."""
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import callback
@@ -20,7 +20,7 @@ class Flow(config_entries.ConfigFlow,domain=DOMAIN):
                 await api.login(user_input["email"],user_input["password"])
                 self.accounts=await api.accounts()
                 if not self.accounts: return self.async_abort(reason="no_accounts")
-                self.login_data={"email":user_input["email"],"refresh_token":api.refresh_token}
+                self.login_data={"email":user_input["email"],"password":user_input["password"],"refresh_token":api.refresh_token}
                 if not api.refresh_token: return self.async_abort(reason="no_refresh_token")
                 if len(self.accounts)==1:
                     return await self.async_step_account({"account":self.accounts[0]["number"]})
@@ -34,7 +34,7 @@ class Flow(config_entries.ConfigFlow,domain=DOMAIN):
             if self.source == config_entries.SOURCE_REAUTH and account != self._get_reauth_entry().data["account"]:
                 return self.async_abort(reason="wrong_account")
             if account not in {a["number"] for a in self.accounts}: return self.async_abort(reason="no_accounts")
-            api=Client(async_get_clientsession(self.hass),self.login_data["refresh_token"])
+            api=Client(async_get_clientsession(self.hass),self.login_data["refresh_token"],email=self.login_data["email"],password=self.login_data["password"])
             try:
                 await api.login()
                 if not await api.meters(account): return self.async_abort(reason="no_smart_meter")
